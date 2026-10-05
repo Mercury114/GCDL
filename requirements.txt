@@ -1,0 +1,10 @@
+torch==2.7.1
+torchvision
+torchaudio
+transformers>=4.51.0
+datasets>=3.5.0
+peft>=0.15.0
+trl>=0.15.0
+accelerate>=1.6.0
+huggingface_hub>=0.30.0
+Pillow>=10.0.0
