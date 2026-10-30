@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+.pytest_cache/
 *.pyo
 .ipynb_checkpoints/
 .venv/
@@ -18,8 +19,12 @@ env/
 *.rar
 *.tar
 *.tar.gz
-data/
+data/*
+!data/sample_data/
+!data/sample_data/**
 datasets/
 checkpoints/
+result/
+*.pyc
 outputs/
 logs/

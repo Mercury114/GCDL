@@ -1,0 +1,11 @@
+{
+  "method": "heldout_end_to_end_detector_visual_omni",
+  "n": 153,
+  "conflict_n": 102,
+  "control_n": 51,
+  "overall_strict_visual_alignment": 0.29411764705882354,
+  "conflict_strict_visual_alignment": 0.3431372549019608,
+  "control_strict_visual_alignment": 0.19607843137254902,
+  "visual_routes": 18,
+  "omni_routes": 135
+}

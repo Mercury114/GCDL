@@ -1,0 +1,17 @@
+{
+  "dataset": "MVSA-Single test.json, label-stratified and eval-disjoint training",
+  "conflict_eval": {"n": 102, "visual_labels": {"negative": 34, "neutral": 34, "positive": 34}},
+  "control_eval": {"n": 51, "visual_labels": {"negative": 17, "neutral": 17, "positive": 17}},
+  "omni_strict_visual_alignment_conflict": 0.3333333333,
+  "base_visual_constrained_conflict": 0.3235294118,
+  "unbalanced_visual_lora_conflict": 0.2647058824,
+  "balanced_visual_lora_conflict": 0.3921568627,
+  "omni_strict_visual_alignment_control": 0.1960784314,
+  "balanced_visual_lora_control": 0.3725490196,
+  "balanced_visual_lora_train_loss": 0.3857,
+  "heldout_detector": {"tp": 13, "fp": 5, "fn": 89, "tn": 46, "f1": 0.2166666667},
+  "end_to_end_conflict_alignment": 0.3431372549,
+  "end_to_end_control_alignment": 0.1960784314,
+  "end_to_end_visual_routes": 18,
+  "note": "All 153 evaluation samples are disjoint from detector and visual LoRA training. The 39.22% visual-branch result must not be reported as the 34.31% end-to-end system result."
+}

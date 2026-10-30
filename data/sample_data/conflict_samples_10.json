@@ -1,0 +1,102 @@
+[
+  {
+    "id": "4966",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/4966.jpg",
+    "text": "https://t.co/ULQ55fDprw #not1pipe http://t.��",
+    "visual_emotion": "neutral",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "2914",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/2914.jpg",
+    "text": "RT @Clumseh: My cats are too fidgety for #trumpyourcat to work, so #pusheen is standing in to help out.",
+    "visual_emotion": "negative",
+    "text_emotion": "neutral",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "2966",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/2966.jpg",
+    "text": "RT @SOSLucasTronche: ? cap des 200 abonn��s atteints pour @SOSLucasTronche ! Quelle belle mobilisation, merci �� tous, du fond du c?ur ! ?? ��",
+    "visual_emotion": "negative",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "2884",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/2884.jpg",
+    "text": "RT @TeamFox2015: Imagine the fear of being chased until you can run no more, earths blocked and nowhere left to run ?, #keeptheban",
+    "visual_emotion": "negative",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "1621",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/1621.jpg",
+    "text": "RT @dereksimonds: GM @GrantRandom #paralyzed @InFlames_SWE belongs on #BigUnsSXM thanks @matthewkheafy for intro. @AceDeucy @pm9",
+    "visual_emotion": "positive",
+    "text_emotion": "negative",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "4962",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/4962.jpg",
+    "text": "BACA: http://t.co/nh17uRoEAf http://t.co/wQ7GdamEkh...",
+    "visual_emotion": "negative",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "1227",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/1227.jpg",
+    "text": "Wedding photo bomb courtesy of random old man #stunned",
+    "visual_emotion": "negative",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "301",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/301.jpg",
+    "text": "Im heated Rt��@kylegotjokes: White people can never just chill",
+    "visual_emotion": "neutral",
+    "text_emotion": "negative",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "3371",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/3371.jpg",
+    "text": "How a #bitcoin atm promotes mixed martial arts in a #lasvegas gym #crypto #cryptocurrency",
+    "visual_emotion": "negative",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  },
+  {
+    "id": "3644",
+    "image_path": "/data/junweijian/GCDL/data/MVSA-Single/data/3644.jpg",
+    "text": "Running clothes, gum in mouth, guac, bananas, sweet potato fries, and sparkling water. My life in one photo. ???",
+    "visual_emotion": "neutral",
+    "text_emotion": "positive",
+    "is_conflict": true,
+    "source": "MVSA-Single",
+    "synthetic": false
+  }
+]

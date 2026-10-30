@@ -1,0 +1,10 @@
+{
+  "method": "fixed_confidence_gate",
+  "threshold": 0.6,
+  "n": 100,
+  "visual_routes": 80,
+  "omni_routes": 20,
+  "strict_visual_correct": 18,
+  "strict_visual_alignment": 0.18,
+  "note": "Threshold fixed before reading ground-truth labels; no label is used for route selection."
+}

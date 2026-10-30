@@ -1,0 +1,17 @@
+{
+  "method": "dual_channel_visual_text_disagreement",
+  "heldout_n": 153,
+  "detector_accuracy": 0.5620915033,
+  "detector_f1": 0.7048458150,
+  "detector_conflict_precision": 0.64,
+  "detector_conflict_recall": 0.7843137255,
+  "end_to_end_conflict_alignment": 0.3921568627,
+  "end_to_end_control_alignment": 0.3137254902,
+  "omni_conflict_alignment": 0.3333333333,
+  "omni_control_alignment": 0.1960784314,
+  "conflict_absolute_gain": 0.0588235294,
+  "visual_routes": 125,
+  "omni_routes": 28,
+  "training_provenance": "TF-IDF text model and visual LoRA trained only on the 334 non-evaluation samples",
+  "note": "No ground-truth labels are used to choose the route. The route is visual_prediction != text_prediction."
+}

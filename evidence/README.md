@@ -1,0 +1,9 @@
+# Evidence
+
+`metrics_audit.json` is generated from the existing real MVSA-Single result files:
+
+- correction results: 100 conflict samples;
+- detector results: 100 conflict + 50 consistent samples;
+- no synthetic samples are included in this audit.
+
+The audit intentionally reports both the historical loose metric (52% hallucination rate) and the stricter visual alignment metric (16%). The latter requires the final emotion to equal the ground-truth visual label and is the primary metric for future experiments.

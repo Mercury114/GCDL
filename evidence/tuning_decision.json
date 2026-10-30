@@ -1,0 +1,6 @@
+{
+  "calibration_protocol": "17 samples per visual label for calibration; remaining held-out samples for check",
+  "selected_model": "word TF-IDF (1,2), LogisticRegression C=2.0, class_weight=balanced",
+  "decision": "retain dual-channel baseline; tuned candidates did not provide a stable improvement on the untouched check split",
+  "primary_end_to_end_conflict_alignment": 0.3921568627
+}
