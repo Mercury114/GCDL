@@ -20,6 +20,7 @@ REQUIRED = [
     "evidence/heldout_end_to_end_summary.json", "docs/RELATED_WORK.md",
     "docs/SYSTEM_DESIGN.md", "docs/COURSE_ALIGNMENT.md",
     "docs/DEMO_RUNBOOK.md",
+    "docs/REPORT_STORY.md",
 ]
 
 

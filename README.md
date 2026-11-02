@@ -12,6 +12,7 @@ demo/run_demo.py         单图片+文本交互 Demo
 demo/streamlit_app.py    可视化 Demo（默认安全演示模式）
 src/emotion_conflict/    可测试的路由策略库
 docs/EXPERIMENT_MANIFEST.md  隔离数据划分和实测结果清单
+docs/REPORT_STORY.md      报告叙事、指标口径和答辩顺序
 docs/                    系统设计、课程对照和相关工作
 tests/                   路由策略自动化测试
 evidence/                已运行结果和审计证据
@@ -171,3 +172,4 @@ make check
 
 报告证据整理见 `docs/REPORT_EVIDENCE.md`；第1章和第3章的人工填写工作表见 `docs/PROBLEM_EVIDENCE_WORKSHEET.md` 与 `docs/ETHICS_WORKSHEET.md`。
 提交前评分自检见 `docs/RUBRIC_SELF_CHECK.md`。它不会预测教师分数，但会阻止缺少关键产出、样例字段或实验审计文件的提交包。
+报告叙事和答辩证据顺序见 `docs/REPORT_STORY.md`。
