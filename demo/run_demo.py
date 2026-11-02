@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Small local demo for detector-gated emotion inference."""
 import argparse
+import gc
 import json
 from pathlib import Path
 
@@ -26,6 +27,20 @@ def generate(processor, model, content, max_new_tokens=32):
     if "image_grid_thw" in inputs:
         inputs["thinker_image_grid_thw"] = inputs.pop("image_grid_thw")
     output = model.generate(**inputs, max_new_tokens=max_new_tokens)
+    return processor.batch_decode(output[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0].strip()
+
+
+def generate_omni(processor, model, content, max_new_tokens=64):
+    """Use Omni's text-generation interface rather than its tuple audio output."""
+    inputs = processor.apply_chat_template(
+        [{"role": "user", "content": content}], tokenize=True,
+        add_generation_prompt=True, return_tensors="pt", return_dict=True)
+    inputs = {k: v.to(model.device) if hasattr(v, "to") else v for k, v in inputs.items()}
+    if "pixel_values" in inputs:
+        inputs["thinker_pixel_values"] = inputs.pop("pixel_values")
+    if "image_grid_thw" in inputs:
+        inputs["thinker_image_grid_thw"] = inputs.pop("image_grid_thw")
+    output = model.generate(**inputs, thinker_max_new_tokens=max_new_tokens, generation_mode="text")
     return processor.batch_decode(output[:, inputs["input_ids"].shape[1]:], skip_special_tokens=True)[0].strip()
 
 
@@ -65,12 +80,15 @@ def main():
                         help="Optional visual-emotion LoRA; defaults to detector adapter")
     parser.add_argument("--detector-confidence", type=float, default=None,
                         help="Calibrated detector confidence; omit to require review on conflict")
+    parser.add_argument("--single-gpu", action="store_true",
+                        help="Place each model on CUDA device 0 after CUDA_VISIBLE_DEVICES.")
     args = parser.parse_args()
     image_path = str(Path(args.image).resolve())
 
+    placement = {"": 0} if args.single_gpu else "auto"
     processor = AutoProcessor.from_pretrained(args.vl_model, local_files_only=True)
     base = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-        args.vl_model, local_files_only=True, torch_dtype=torch.bfloat16, device_map="auto")
+        args.vl_model, local_files_only=True, torch_dtype=torch.bfloat16, device_map=placement)
     detector = None
     detector_raw = ""
     visual_model = base
@@ -114,10 +132,19 @@ def main():
                     {"type": "text", "text": "请仅根据这张图片判断人物的情绪，输出一个词。"}])
         route = "visual-only correction (Qwen2.5-VL)"
     elif decision.route == "omni":
+        # The detector branch is no longer needed. Releasing it keeps the
+        # real demo within a single 48 GB GPU when Omni is loaded.
+        del visual_model
+        if detector is not None:
+            del detector
+        del base
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
         omni_processor = AutoProcessor.from_pretrained(args.omni_model, local_files_only=True)
         omni = Qwen2_5OmniForConditionalGeneration.from_pretrained(
-            args.omni_model, local_files_only=True, torch_dtype="auto", device_map="auto")
-        result = generate(omni_processor, omni, [
+            args.omni_model, local_files_only=True, torch_dtype="auto", device_map=placement)
+        result = generate_omni(omni_processor, omni, [
             {"type": "image", "image": image_path},
             {"type": "text", "text": f"请综合判断图像和文本的整体情绪。文本：{args.text}"}])
         route = "multimodal synthesis (Qwen2.5-Omni)"

@@ -18,21 +18,21 @@ The historical generation-based pipeline produced an attractive-looking loose ha
 
 ### 3. The revised system makes the route auditable
 
-The current primary system predicts visual polarity with a balanced visual LoRA branch and text polarity with an independent TF-IDF classifier. It declares a conflict only when the two predictions disagree. The route decision does not inspect ground-truth labels. A conflict goes to visual-only constrained prediction; agreement stays on the Omni multimodal route. This separates detection, routing, and final prediction, making each stage testable.
+The current primary system predicts visual polarity with a token-supervised visual LoRA branch and text polarity with an independent TF-IDF classifier. It declares a conflict only when the two predictions disagree. The visual LoRA masks prompt and chat-termination tokens, so its loss is computed only on the single class-answer token. The route decision does not inspect ground-truth labels. A conflict goes to visual-only constrained prediction; agreement stays on the Omni multimodal route. This separates detection, routing, and final prediction, making each stage testable.
 
 ### 4. The held-out result is a real but bounded improvement
 
 | System | Conflict strict visual alignment | Control strict visual alignment |
 |---|---:|---:|
 | Qwen2.5-Omni baseline | 33.33% (34/102) | 19.61% (10/51) |
-| Dual-channel dynamic routing | **39.22% (40/102)** | **31.37% (16/51)** |
-| Absolute change | **+5.89 pp** | **+11.76 pp** |
+| Token-supervised dual-channel dynamic routing | **42.16% (43/102)** | **29.41% (15/51)** |
+| Absolute change | **+8.82 pp** | **+9.80 pp** |
 
-The conflict gain is 17.7% relative to the Omni baseline alignment, while the absolute gain is 5.89 percentage points. The system detector reaches F1=70.48%, conflict precision=64.00%, and conflict recall=78.43% on the same 153-sample held-out set. These numbers support a meaningful engineering improvement, not a claim of complete hallucination removal.
+The conflict gain is 26.47% relative to the Omni baseline alignment, while the absolute gain is 8.82 percentage points. On the same conflict split, the auxiliary loose hallucination rate decreases from 42.16% (43/102) to 31.37% (32/102). The system detector reaches F1=66.67%, conflict precision=63.16%, and conflict recall=70.59% on the same 153-sample held-out set. These numbers support a meaningful engineering improvement, not a claim of complete hallucination removal.
 
 ### 5. The limitation is part of the result
 
-The system routes 125/153 samples through the visual branch and 28/153 through Omni. The detector is not perfect, and the visual branch is not a human-verified emotion judge. MVSA labels are sentiment-polarity annotations, not ground-truth psychological states. The correct conclusion is therefore “pre-generation routing improves visual-fact alignment under this evaluation protocol,” not “the system solves emotion hallucination in general.”
+The system routes 114/153 samples through the visual branch and 39/153 through Omni. The static token-supervised visual branch has higher overall strict alignment (63/153) than dynamic routing (58/153), so the Omni-preserving route is an explicit behavior trade-off rather than a universal accuracy win. The detector is not perfect, and the visual branch is not a human-verified emotion judge. MVSA labels are sentiment-polarity annotations, not ground-truth psychological states. The correct conclusion is therefore “pre-generation routing improves visual-fact alignment under this evaluation protocol,” not “the system solves emotion hallucination in general.”
 
 ## Recommended defense sequence
 
@@ -46,7 +46,7 @@ The system routes 125/153 samples through the visual branch and 28/153 through O
 
 - Primary metric: strict visual alignment, `final_emotion == visual_emotion`.
 - Historical auxiliary metric: loose hallucination, where an output is treated as non-hallucinated if it matches either the visual or text label. It is retained only for reproducing the earlier report and must not replace the strict metric.
-- Never report the 39.22% visual-branch ablation as the end-to-end result. The primary end-to-end result is separately recorded as 39.22% in `evidence/dual_channel_summary.json`, with a different detector and routing rule than the earlier generation-based system.
+- Never report a visual-branch ablation as an end-to-end result. The current primary end-to-end result is 42.16% conflict strict visual alignment in `evidence/token_supervised_dual_channel_summary.json`; earlier system versions remain in their own evidence files.
 
 ## Evidence map
 
@@ -54,6 +54,6 @@ The system routes 125/153 samples through the visual branch and 28/153 through O
 |---|---|
 | Real-data provenance and historical metric audit | `evidence/metrics_audit.json` |
 | Balanced, evaluation-disjoint split | `evidence/stratified_results_summary.json` |
-| Current detector and end-to-end result | `evidence/dual_channel_summary.json` |
+| Current detector and end-to-end result | `evidence/token_supervised_dual_channel_summary.json` |
 | Exact split and anti-confusion rule | `docs/EXPERIMENT_MANIFEST.md` |
 | Demo procedure | `docs/DEMO_RUNBOOK.md` |

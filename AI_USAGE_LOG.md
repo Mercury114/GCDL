@@ -111,3 +111,13 @@
 **人工修改**：Demo 默认切换到视觉 LoRA + TF-IDF 文本分类器双通道；预测不一致走视觉-only，预测一致走 Omni；旧 detector 通过 `--mode legacy` 保留。
 
 **修改原因**：现场演示必须和最新离线实验使用同一主方案，否则报告指标与 Demo 行为不一致。新增 `DEMO_RUNBOOK.md` 记录运行路径和答辩展示证据。
+
+## 12. 视觉分类训练目标与数据管线修复
+
+**提示词**：继续评估是否需要优化，并寻找能够用真实证据说明相对基线改进的方法。
+
+**AI 初稿**：沿用视觉 LoRA 的 prompt-mask 训练，并以完整 chat completion（类别词、结束符、换行）计算语言模型损失。
+
+**人工修改**：新增 `finetune_visual_emotion_token_supervised.py`，将 prompt、`<|im_end|>` 和换行全部 mask，只监督 Assistant 输出的单个 `positive`、`neutral` 或 `negative` token；同时将预先展开图像张量的 Dataset 改为 collate 时按路径惰性加载，避免约60GB的内存膨胀和 CPU 回退。新 adapter 在全部153条留出样本之外训练，并用 `evaluate_token_supervised_system.py` 在同一冻结集重算结果。
+
+**修改原因**：旧模型出现“训练 Loss=0.39、训练样本受限标签对齐仅20.5%”的矛盾。排查表明结束 token 容易预测，会稀释真正的三分类损失。修复后 token-only Loss 收敛至1.17，端到端冲突严格视觉对齐从 Omni 的33.33%提升到42.16%，宽松幻觉率从42.16%降至31.37%。静态视觉消融在总体对齐上更高，因而在报告中如实说明动态路由的能力保留与对齐率之间的权衡。

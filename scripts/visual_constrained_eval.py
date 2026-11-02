@@ -19,10 +19,13 @@ def main():
     ap.add_argument("--data", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--adapter", default=None)
+    ap.add_argument("--single-gpu", action="store_true",
+                    help="Place the full model on CUDA device 0 after CUDA_VISIBLE_DEVICES.")
     args = ap.parse_args()
     processor = AutoProcessor.from_pretrained(args.model, local_files_only=True)
     model = Qwen2_5_VLForConditionalGeneration.from_pretrained(
-        args.model, local_files_only=True, torch_dtype=torch.bfloat16, device_map="auto")
+        args.model, local_files_only=True, torch_dtype=torch.bfloat16,
+        device_map={"": 0} if args.single_gpu else "auto")
     if args.adapter:
         model = PeftModel.from_pretrained(model, args.adapter)
     model.eval()

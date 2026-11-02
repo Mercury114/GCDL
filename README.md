@@ -58,7 +58,7 @@ python scripts/evaluate_with_correction.py --base /path/to/Qwen2.5-VL-7B --adapt
 Demo：
 
 ```bash
-python demo/run_demo.py --image /path/to/image.jpg --text "这真是令人开心的一天。" --vl-model /path/to/Qwen2.5-VL-7B --omni-model /path/to/Qwen2.5-Omni-7B --visual-adapter /path/to/visual_lora_balanced --text-model /path/to/text_emotion_tfidf.joblib
+python demo/run_demo.py --image /path/to/image.jpg --text "这真是令人开心的一天。" --vl-model /path/to/Qwen2.5-VL-7B --omni-model /path/to/Qwen2.5-Omni-7B --visual-adapter /path/to/visual_lora_token_supervised --text-model /path/to/text_emotion_tfidf.joblib --single-gpu
 ```
 
 该命令默认运行当前双通道主方案；旧生成式 detector 兼容模式使用 `--mode legacy --adapter /path/to/conflict_detector_lora_v2`。
@@ -134,13 +134,29 @@ python scripts/evaluate_dual_channel.py \
   --output outputs/dual_channel.json
 ```
 
-双通道规则是“独立视觉预测 != 独立文本预测 => 冲突”。在隔离153条样本上，检测F1为70.48%，召回78.43%；它是当前端到端系统的候选 detector。
+Token-only 视觉 LoRA 与当前端到端评估：
 
-最新的平衡隔离实验见 `evidence/stratified_results_summary.json` 和 `evidence/dual_channel_summary.json`：102条冲突评估集按视觉标签各34条，51条一致控制集各17条。视觉 LoRA 使用排除评估样本后的真实 MVSA 图像训练，平衡训练后视觉支路冲突对齐率39.22%，控制集37.25%；对应 Omni 分别为33.33%和19.61%。双通道 detector（独立文本分类器 + 视觉 LoRA disagreement）将端到端冲突对齐率提升到39.22%，控制集31.37%，detector F1=70.48%。旧生成式 detector 的21.67%结果作为失败对照保留。
+```bash
+CUDA_VISIBLE_DEVICES=0 python scripts/finetune_visual_emotion_token_supervised.py \
+  --model /path/to/Qwen2.5-VL-7B \
+  --data /path/to/visual_train_balanced.json \
+  --output /path/to/visual_lora_token_supervised \
+  --epochs 3 --learning-rate 2e-5 --single-gpu
+python scripts/evaluate_token_supervised_system.py \
+  --visual-conflict /path/to/visual_conflict_eval.json \
+  --visual-control /path/to/visual_control_eval.json \
+  --text-model /path/to/text_emotion_tfidf.joblib \
+  --baseline /path/to/baseline_heldout_normalized.json \
+  --output outputs/token_supervised_dual_channel.json
+```
+
+双通道规则是“独立视觉预测 != 独立文本预测 => 冲突”。token-only 训练将 prompt 和 chat 结束 token 的 label 设为 `-100`，只监督类别答案 token；路由与评价严格分离，真实标签只在推理后用于计算指标。
+
+最新的平衡隔离实验见 `evidence/token_supervised_dual_channel_summary.json`：102条冲突评估集按视觉标签各34条，51条一致控制集各17条。训练集排除了全部153条评估ID。视觉 LoRA 改为仅监督 Assistant 的单个类别 token，避免结束符稀释分类损失。当前双通道动态系统将端到端冲突严格视觉对齐率从 Omni 的33.33%提升到42.16%（+8.82个百分点），控制集从19.61%提升到29.41%（+9.80个百分点）；冲突集宽松幻觉率从42.16%降至31.37%。检测器 F1=66.67%、precision=63.16%、recall=70.59%。静态视觉支路在总体严格对齐上更高，因而该项路由是保留 Omni 综合推理能力的明确技术权衡，而非所有静态策略上的绝对最优。
 
 ## 实验结论摘要
 
-基于 MVSA-Single 真实图文情感标注冲突集，历史报告中的宽松指标为：Qwen2.5-Omni-7B 基线 **58%**、简单 Prompt 预警 **60%**、前置视觉矫正 **52%**。扩展审计发现，三分类冲突样本中“输出文本标签”会被旧规则误算为非幻觉；因此新增严格指标 `final_emotion == visual_emotion`。对现有 100 条矫正结果重算后，严格视觉对齐率为 **16%**。两者必须并列报告，52% 不能单独作为视觉矫正成功的证据。本摘要不包含纯视觉或纯文本单模态实验。
+基于 MVSA-Single 真实图文情感标注冲突集，历史报告中的宽松指标为：Qwen2.5-Omni-7B 基线 **58%**、简单 Prompt 预警 **60%**、前置视觉矫正 **52%**。扩展审计发现，三分类冲突样本中“输出文本标签”会被旧规则误算为非幻觉；因此新增严格指标 `final_emotion == visual_emotion`。在新的冻结、均衡留出集上，token-supervised 双通道系统将严格视觉对齐率由 **33.33% 提升至42.16%**，并将同一冲突集的宽松幻觉率由 **42.16% 降至31.37%**。历史与冻结集指标必须分开报告，不能互相替代。本摘要不包含纯视觉或纯文本单模态实验。
 
 ## 数据来源声明
 

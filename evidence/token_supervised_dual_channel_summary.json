@@ -1,0 +1,41 @@
+{
+  "method": "token_supervised_visual_lora_plus_dual_channel_disagreement",
+  "data_provenance": "MVSA-Single real labels; no synthetic samples",
+  "evaluation_protocol": "Frozen label-stratified held-out split. All 153 evaluation IDs were excluded from visual LoRA and text-classifier training. Ground-truth labels are used only after routing for scoring.",
+  "heldout_n": 153,
+  "conflict_n": 102,
+  "control_n": 51,
+  "omni_baseline": {
+    "conflict_strict_visual_alignment": 0.3333333333,
+    "conflict_loose_hallucination_rate": 0.4215686275,
+    "control_strict_visual_alignment": 0.1960784314,
+    "overall_strict_visual_alignment": 0.2875816993
+  },
+  "static_token_supervised_visual": {
+    "conflict_strict_visual_alignment": 0.4117647059,
+    "control_strict_visual_alignment": 0.4117647059,
+    "overall_strict_visual_alignment": 0.4117647059
+  },
+  "dynamic_system": {
+    "conflict_strict_visual_alignment": 0.4215686275,
+    "conflict_loose_hallucination_rate": 0.3137254902,
+    "control_strict_visual_alignment": 0.2941176471,
+    "overall_strict_visual_alignment": 0.3790849673,
+    "visual_routes": 114,
+    "omni_routes": 39
+  },
+  "detector": {
+    "accuracy": 0.5294117647,
+    "f1": 0.6666666667,
+    "precision": 0.6315789474,
+    "recall": 0.7058823529
+  },
+  "change_vs_omni": {
+    "conflict_strict_visual_alignment_absolute_pp": 8.82352942,
+    "conflict_strict_visual_alignment_relative_percent": 26.47058826,
+    "conflict_loose_hallucination_absolute_pp": -10.78431373,
+    "control_strict_visual_alignment_absolute_pp": 9.80392157,
+    "overall_strict_visual_alignment_absolute_pp": 9.1503268
+  },
+  "training_fix": "Only the single Assistant class token is supervised; prompt, end-of-turn, and newline tokens are masked."
+}
