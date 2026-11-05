@@ -189,3 +189,5 @@ make check
 报告证据整理见 `docs/REPORT_EVIDENCE.md`；第1章和第3章的人工填写工作表见 `docs/PROBLEM_EVIDENCE_WORKSHEET.md` 与 `docs/ETHICS_WORKSHEET.md`。
 提交前评分自检见 `docs/RUBRIC_SELF_CHECK.md`。它不会预测教师分数，但会阻止缺少关键产出、样例字段或实验审计文件的提交包。
 报告叙事和答辩证据顺序见 `docs/REPORT_STORY.md`。
+
+面向答辩稿生成与技术复核的完整事实底稿见 `docs/TECHNICAL_DOCUMENTATION_FOR_DEFENSE.md`。其中明确区分历史实验、组件消融与当前冻结集端到端主结果，并包含可复现实验命令、方法迭代、局限和答辩问答。

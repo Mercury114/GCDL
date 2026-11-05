@@ -24,6 +24,7 @@ REQUIRED = [
     "docs/SYSTEM_DESIGN.md", "docs/COURSE_ALIGNMENT.md",
     "docs/DEMO_RUNBOOK.md",
     "docs/REPORT_STORY.md",
+    "docs/TECHNICAL_DOCUMENTATION_FOR_DEFENSE.md",
 ]
 
 
